@@ -8,6 +8,7 @@ import { InvoiceCard } from '@/components/InvoiceCard';
 import { SampleUpload } from '@/components/SampleUpload';
 import { ClearanceForm } from '@/components/ClearanceForm';
 import { PaymentButton } from '@/components/PaymentButton';
+import { X402PaymentButton } from '@/components/X402PaymentButton';
 import { DEMO_SAMPLES, DEMO_INVOICES } from '@/lib/constants';
 import { Sample, Invoice, LicenseTerms } from '@/lib/types';
 import { Music, FileText, Plus, DollarSign, TrendingUp } from 'lucide-react';
@@ -184,21 +185,50 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="space-y-4">
-              <PaymentButton
-                variant="onchain"
-                amount={selectedInvoice.amount}
-                invoiceId={selectedInvoice.invoiceId}
-                onPaymentSuccess={handlePaymentSuccess}
-                onPaymentError={(error) => console.error(error)}
-              />
-              <PaymentButton
-                variant="fiat"
-                amount={selectedInvoice.amount}
-                invoiceId={selectedInvoice.invoiceId}
-                onPaymentSuccess={handlePaymentSuccess}
-                onPaymentError={(error) => console.error(error)}
-              />
+            <div className="space-y-6">
+              {/* X402 Payment (Primary) */}
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Pay with USDC (Recommended)</h3>
+                <p className="text-sm text-gray-600">
+                  Secure on-chain payment using x402 protocol on Base network
+                </p>
+                <X402PaymentButton
+                  amount={selectedInvoice.amount}
+                  invoiceId={selectedInvoice.invoiceId}
+                  recipient="0x742d35Cc6634C0532925a3b8D0C9e3e0C0c0c0c0" // Demo recipient address
+                  description={`Payment for sample clearance invoice ${selectedInvoice.invoiceId}`}
+                  onPaymentSuccess={handlePaymentSuccess}
+                  onPaymentError={(error) => console.error(error)}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or pay with</span>
+                </div>
+              </div>
+
+              {/* Legacy Payment Options */}
+              <div className="space-y-4">
+                <PaymentButton
+                  variant="onchain"
+                  amount={selectedInvoice.amount}
+                  invoiceId={selectedInvoice.invoiceId}
+                  onPaymentSuccess={handlePaymentSuccess}
+                  onPaymentError={(error) => console.error(error)}
+                />
+                <PaymentButton
+                  variant="fiat"
+                  amount={selectedInvoice.amount}
+                  invoiceId={selectedInvoice.invoiceId}
+                  onPaymentSuccess={handlePaymentSuccess}
+                  onPaymentError={(error) => console.error(error)}
+                />
+              </div>
             </div>
             
             <button
