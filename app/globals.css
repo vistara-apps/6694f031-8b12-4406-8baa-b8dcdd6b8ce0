@@ -4,57 +4,153 @@
 
 @layer base {
   * {
-    @apply border-gray-200;
+    @apply border-border;
   }
   
   body {
-    @apply bg-bg text-text-primary;
+    @apply bg-bg text-text-primary font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-bg;
   }
 }
 
 @layer components {
+  /* Glass morphism cards */
   .glass-card {
-    @apply bg-surface/80 backdrop-blur-sm border border-white/20 shadow-card;
+    @apply bg-surface/80 backdrop-blur-sm border border-white/20 shadow-glass rounded-lg;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
   
+  .glass-card:hover {
+    @apply shadow-card-hover border-white/30;
+    transform: translateY(-1px);
+  }
+  
+  /* Enhanced button styles */
   .btn-primary {
-    @apply bg-gradient-to-r from-primary to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl;
+    @apply bg-gradient-to-r from-primary to-primary-600 text-white px-6 py-3 rounded-lg font-medium 
+           hover:from-primary-600 hover:to-primary-700 active:from-primary-700 active:to-primary-800
+           transition-all duration-200 shadow-button hover:shadow-lg hover:-translate-y-0.5
+           focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-bg
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none;
   }
   
   .btn-secondary {
-    @apply bg-surface text-text-primary border border-gray-200 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-all duration-200;
+    @apply bg-surface text-text-primary border border-border px-6 py-3 rounded-lg font-medium 
+           hover:bg-surface-elevated hover:border-border-strong active:bg-muted
+           transition-all duration-200 shadow-sm hover:shadow-md
+           focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-bg
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-accent {
-    @apply bg-gradient-to-r from-accent to-teal-500 text-white px-6 py-3 rounded-lg font-medium hover:from-teal-500 hover:to-teal-600 transition-all duration-200 shadow-lg hover:shadow-xl;
+    @apply bg-gradient-to-r from-accent to-accent-600 text-white px-6 py-3 rounded-lg font-medium 
+           hover:from-accent-600 hover:to-accent-700 active:from-accent-700 active:to-accent-800
+           transition-all duration-200 shadow-button hover:shadow-lg hover:-translate-y-0.5
+           focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-bg
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none;
   }
   
+  .btn-ghost {
+    @apply text-text-secondary hover:text-text-primary hover:bg-muted px-4 py-2 rounded-lg font-medium
+           transition-all duration-200 focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-bg;
+  }
+  
+  /* Enhanced form inputs */
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-surface;
+    @apply w-full px-4 py-3 border border-border rounded-lg bg-surface text-text-primary
+           focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-border-strong
+           transition-all duration-200 placeholder:text-text-tertiary
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted;
   }
   
+  .input-field:invalid {
+    @apply border-error focus:ring-error/20 focus:border-error;
+  }
+  
+  /* Status badges with improved design */
   .status-active {
-    @apply bg-green-100 text-green-800 border-green-200;
+    @apply bg-success-50 text-success-600 border border-success-100 px-3 py-1 rounded-full text-sm font-medium;
   }
   
   .status-pending {
-    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+    @apply bg-warning-50 text-warning-600 border border-warning-100 px-3 py-1 rounded-full text-sm font-medium;
   }
   
   .status-cleared {
-    @apply bg-blue-100 text-blue-800 border-blue-200;
+    @apply bg-primary-50 text-primary-600 border border-primary-100 px-3 py-1 rounded-full text-sm font-medium;
   }
   
   .status-paid {
-    @apply bg-green-100 text-green-800 border-green-200;
+    @apply bg-success-50 text-success-600 border border-success-100 px-3 py-1 rounded-full text-sm font-medium;
   }
   
   .status-unpaid {
-    @apply bg-red-100 text-red-800 border-red-200;
+    @apply bg-error-50 text-error-600 border border-error-100 px-3 py-1 rounded-full text-sm font-medium;
   }
   
   .status-overdue {
-    @apply bg-red-200 text-red-900 border-red-300;
+    @apply bg-error-100 text-error-600 border border-error-200 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  /* Navigation styles */
+  .nav-link {
+    @apply font-medium transition-all duration-200 px-3 py-2 rounded-lg relative;
+  }
+  
+  .nav-link.active {
+    @apply text-primary bg-primary/5;
+  }
+  
+  .nav-link.active::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full;
+  }
+  
+  .nav-link:not(.active) {
+    @apply text-text-secondary hover:text-primary hover:bg-muted;
+  }
+  
+  /* Loading states */
+  .loading-shimmer {
+    @apply bg-gradient-to-r from-muted via-surface to-muted bg-[length:200%_100%] animate-shimmer;
+  }
+  
+  /* Improved scrollbars */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-text-tertiary rounded-full hover:bg-text-secondary;
+  }
+  
+  /* Progress bars */
+  .progress-bar {
+    @apply w-full bg-muted rounded-full h-2 overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-primary to-primary-600 rounded-full transition-all duration-300;
+  }
+  
+  /* Tooltip styles */
+  .tooltip {
+    @apply absolute z-50 px-2 py-1 text-xs text-white bg-text-primary rounded shadow-lg pointer-events-none
+           opacity-0 transition-opacity duration-200;
+  }
+  
+  .tooltip.show {
+    @apply opacity-100;
   }
 }
