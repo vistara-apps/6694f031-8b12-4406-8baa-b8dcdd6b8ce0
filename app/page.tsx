@@ -8,9 +8,11 @@ import { InvoiceCard } from '@/components/InvoiceCard';
 import { SampleUpload } from '@/components/SampleUpload';
 import { ClearanceForm } from '@/components/ClearanceForm';
 import { PaymentButton } from '@/components/PaymentButton';
+import { StatsCard } from '@/components/StatsCard';
+import { EmptyState } from '@/components/EmptyState';
 import { DEMO_SAMPLES, DEMO_INVOICES } from '@/lib/constants';
 import { Sample, Invoice, LicenseTerms } from '@/lib/types';
-import { Music, FileText, Plus, DollarSign, TrendingUp } from 'lucide-react';
+import { Music, FileText, Plus, DollarSign, TrendingUp, CheckCircle, Clock, Receipt, Inbox } from 'lucide-react';
 
 type View = 'dashboard' | 'upload' | 'samples' | 'invoices' | 'clearance' | 'payment';
 
@@ -125,18 +127,31 @@ export default function HomePage() {
                 <span>Upload Sample</span>
               </button>
             </div>
-            <div className="grid gap-6">
-              {samples.map(sample => (
-                <SampleListItem
-                  key={sample.sampleId}
-                  sample={sample}
-                  onClick={() => {
-                    setSelectedSample(sample);
-                    setCurrentView('clearance');
-                  }}
-                />
-              ))}
-            </div>
+            
+            {samples.length === 0 ? (
+              <EmptyState
+                icon={<Music className="w-full h-full" />}
+                title="No samples yet"
+                description="Upload your first audio file to get started with sample clearance and licensing."
+                action={{
+                  label: "Upload Sample",
+                  onClick: () => setCurrentView('upload')
+                }}
+              />
+            ) : (
+              <div className="grid gap-6">
+                {samples.map(sample => (
+                  <SampleListItem
+                    key={sample.sampleId}
+                    sample={sample}
+                    onClick={() => {
+                      setSelectedSample(sample);
+                      setCurrentView('clearance');
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         );
       
@@ -144,18 +159,32 @@ export default function HomePage() {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Invoices</h2>
-            <div className="grid gap-6 md:grid-cols-2">
-              {invoices.map(invoice => (
-                <InvoiceCard
-                  key={invoice.invoiceId}
-                  invoice={invoice}
-                  onPayClick={() => {
-                    setSelectedInvoice(invoice);
-                    setCurrentView('payment');
-                  }}
-                />
-              ))}
-            </div>
+            
+            {invoices.length === 0 ? (
+              <EmptyState
+                icon={<Receipt className="w-full h-full" />}
+                title="No invoices yet"
+                description="Invoices will appear here when you submit clearance requests for your samples."
+                action={{
+                  label: "View Samples",
+                  onClick: () => setCurrentView('samples'),
+                  variant: 'secondary'
+                }}
+              />
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2">
+                {invoices.map(invoice => (
+                  <InvoiceCard
+                    key={invoice.invoiceId}
+                    invoice={invoice}
+                    onPayClick={() => {
+                      setSelectedInvoice(invoice);
+                      setCurrentView('payment');
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         );
       
@@ -223,28 +252,49 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="glass-card p-4 text-center">
-                <Music className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold">{stats.totalSamples}</div>
-                <div className="text-sm text-text-secondary">Total Samples</div>
-              </div>
-              <div className="glass-card p-4 text-center">
-                <FileText className="w-8 h-8 text-accent mx-auto mb-2" />
-                <div className="text-2xl font-bold">{stats.clearedSamples}</div>
-                <div className="text-sm text-text-secondary">Cleared</div>
-              </div>
-              <div className="glass-card p-4 text-center">
-                <DollarSign className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">{stats.paidInvoices}</div>
-                <div className="text-sm text-text-secondary">Paid Invoices</div>
-              </div>
-              <div className="glass-card p-4 text-center">
-                <TrendingUp className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">${stats.totalRevenue}</div>
-                <div className="text-sm text-text-secondary">Revenue</div>
-              </div>
+            {/* Enhanced Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <StatsCard
+                title="Total Samples"
+                value={stats.totalSamples}
+                icon={<Music className="w-full h-full" />}
+                trend={{
+                  value: 12,
+                  isPositive: true,
+                  label: 'this month'
+                }}
+              />
+              <StatsCard
+                title="Cleared Samples"
+                value={stats.clearedSamples}
+                icon={<CheckCircle className="w-full h-full" />}
+                trend={{
+                  value: 8,
+                  isPositive: true,
+                  label: 'this week'
+                }}
+              />
+              <StatsCard
+                title="Paid Invoices"
+                value={stats.paidInvoices}
+                icon={<Receipt className="w-full h-full" />}
+                trend={{
+                  value: 15,
+                  isPositive: true,
+                  label: 'this month'
+                }}
+              />
+              <StatsCard
+                title="Total Revenue"
+                value={stats.totalRevenue}
+                icon={<TrendingUp className="w-full h-full" />}
+                format="currency"
+                trend={{
+                  value: 23,
+                  isPositive: true,
+                  label: 'vs last month'
+                }}
+              />
             </div>
 
             {/* Quick Actions */}
@@ -295,30 +345,24 @@ export default function HomePage() {
 
   return (
     <AppShell variant="glass">
-      {/* Navigation */}
+      {/* Enhanced Navigation */}
       <div className="flex items-center justify-between mb-8">
-        <nav className="flex space-x-6">
+        <nav className="flex space-x-2 bg-surface/50 backdrop-blur-sm rounded-xl p-2 border border-white/10">
           <button
             onClick={() => setCurrentView('dashboard')}
-            className={`font-medium transition-colors duration-200 ${
-              currentView === 'dashboard' ? 'text-primary' : 'text-text-secondary hover:text-primary'
-            }`}
+            className={`nav-link ${currentView === 'dashboard' ? 'active' : ''}`}
           >
             Dashboard
           </button>
           <button
             onClick={() => setCurrentView('samples')}
-            className={`font-medium transition-colors duration-200 ${
-              currentView === 'samples' ? 'text-primary' : 'text-text-secondary hover:text-primary'
-            }`}
+            className={`nav-link ${currentView === 'samples' ? 'active' : ''}`}
           >
             Samples
           </button>
           <button
             onClick={() => setCurrentView('invoices')}
-            className={`font-medium transition-colors duration-200 ${
-              currentView === 'invoices' ? 'text-primary' : 'text-text-secondary hover:text-primary'
-            }`}
+            className={`nav-link ${currentView === 'invoices' ? 'active' : ''}`}
           >
             Invoices
           </button>
