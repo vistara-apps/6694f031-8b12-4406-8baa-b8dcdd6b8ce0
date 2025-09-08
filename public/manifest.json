@@ -1,0 +1,14 @@
+{
+  "name": "SampleSafe",
+  "description": "SampleSafe is a Base Mini App built with Zara.",
+  "image": "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=OG",
+  "external_url": "https://6694f031-8b12-4406-8baa-b8dcdd6b8ce0.vercel.app",
+  "properties": {
+    "app": {
+      "name": "SampleSafe",
+      "description": "SampleSafe is a Base Mini App built with Zara.",
+      "url": "https://6694f031-8b12-4406-8baa-b8dcdd6b8ce0.vercel.app",
+      "icon": "https://0co.to/images/zara-2.png"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "SampleSafe",
+    "subtitle": "Built with Zara",
+    "description": "SampleSafe is a Base Mini App built with Zara.",
+    "iconUrl": "https://0co.to/images/zara-2.png",
+    "homeUrl": "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app",
+    "splashImageUrl": "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app/splash.png",
+    "splashBackgroundColor": "#000000",
+    "heroImageUrl": "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app/image.png",
+    "tagline": "SampleSafe",
+    "screenshotUrls": [
+      "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app/screenshot.png",
+      "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "base",
+      "miniapp",
+      "onchainkit"
+    ],
+    "webhookUrl": "https://6694f0318b1244068baab8dcdd6b8ce0-6tfz.vercel.app/api/webhook"
+  }
+}
